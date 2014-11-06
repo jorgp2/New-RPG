@@ -4,34 +4,16 @@ using System.Collections.Generic;
 
 
 [System.Serializable]
-public class CameraControls{
 
-	public GameObject CamAxis;
-	public GameObject CamY;
-	public float sensitivityX = 15F;
-	
-	public float minimumX = -360F;
-	public float maximumX = 360F;
-
-	public float sensitivityY=1f;
-
-	public float maximumY=400;
-	public float minimumY=320;
-
-	public float rotationY=0;
-
-}
 
 
 public class PlayerController : MonoBehaviour {
 
-	public CameraControls Cam;
+	public Camera camera;
 	public NavMeshAgent NavAgent;
 	public Animator Anim;
 	public WeaponManager Weap;
-	public Camera cameraa;
     public float MaxDistance = 5f;
-    public Transform InitialPos;
 
 	public Inventory Inv;
 	public GameObject Target;
@@ -47,7 +29,6 @@ public class PlayerController : MonoBehaviour {
 	public GameObject EnemySparks;
 	// Use this for initialization
 	void Start () {
-        InitialPos = cameraa.transform;
 		if(NavAgent==null)
 			NavAgent=GetComponent<NavMeshAgent>();
 		StartCoroutine(DoInput());
@@ -77,68 +58,16 @@ public class PlayerController : MonoBehaviour {
 				{
 					StartCoroutine(ProcessMouseClick());
 				}
-				if(Input.GetButton("Camera"))
-				{
-					StartCoroutine(CamMove());
-				}
+				
 				if(Anim.GetCurrentAnimatorStateInfo(0).IsName("Walk") && NavAgent.remainingDistance<NavAgent.stoppingDistance)
 				Anim.Play("Idle");
-                if(Input.GetAxis("Horizontal")!=0 && Vector3.Distance(InitialPos.position,camera.transform.position)<MaxDistance)
-                {
-                    Vector3 xxxxx=camera.transform.position;
-
-                    xxxxx+= Input.GetAxis("Horizontal")*camera.transform.right;
-                    camera.transform.position = xxxxx;
-                }
-                if (Input.GetAxis("Vertical") != 0 && Vector3.Distance(InitialPos.position, camera.transform.position) < MaxDistance)
-                {
-                    Vector3 xxxxx = camera.transform.position;
-                    xxxxx += Input.GetAxis("Vertical") * camera.transform.forward;
-                    camera.transform.position = xxxxx;
-                }
-                if(Input.GetButton("CenterCamera"))
-                {
-                    camera.transform.position = InitialPos.position;
-
-                }
 			yield return new WaitForSeconds(.05f);
 			}
 			else
 				yield return new WaitForEndOfFrame();
 	}
+	
 
-	IEnumerator CamMove()
-	{
-		while(Input.GetButton("Camera"))
-		{
-			float rotationX =  Input.GetAxis("Mouse X") * Cam.sensitivityX;
-			Cam.CamAxis.gameObject.transform.Rotate(Vector3.up * rotationX );
-
-			Cam.rotationY+= -Input.GetAxis("Mouse Y") * Cam.sensitivityY;
-			Cam.rotationY= Mathf.Clamp(Cam.rotationY,Cam.minimumY,Cam.maximumY);
-
-			Vector3 tmp = Cam.CamY.transform.rotation.eulerAngles;
-			tmp.z=Cam.rotationY;
-			Cam.CamY.gameObject.transform.rotation=Quaternion.Euler(tmp );
-			yield return new WaitForEndOfFrame();
-		}
-	}
-	IEnumerator FollowTarget(){
-		while(Target!=null)
-		{
-			NavAgent.SetDestination(Target.transform.position);
-			if(Vector3.Distance(transform.position,Target.transform.position)<=4)
-			{
-				if(Target.GetComponent<EnemyManager>()!=null)
-					Target.GetComponent<EnemyManager>().DoDamage(20);
-				else
-					Target.GetComponent<EnemyHandle>().DoDamage(20);
-				Anim.Play("Attack");
-			}
-			yield return new WaitForSeconds(.3f);
-		}
-		yield return new WaitForEndOfFrame();
-	}
 	public void DoDamage(int dmg){
 		if(Health-dmg>0)
 		{
@@ -152,7 +81,7 @@ public class PlayerController : MonoBehaviour {
 	IEnumerator ProcessMouseClick()
 	{
 		RaycastHit Test;
-		if(Physics.Raycast(cameraa.ScreenPointToRay(Input.mousePosition), out Test))
+		if(Physics.Raycast(camera.ScreenPointToRay(Input.mousePosition), out Test))
 		{
 			GameObject obj= Test.collider.gameObject;
 			switch (Test.collider.tag) {
@@ -193,13 +122,9 @@ public class PlayerController : MonoBehaviour {
 							(Instantiate(EnemySparks,Test.point,Quaternion.Euler(new Vector3(0,0,0))) as GameObject).transform.parent=GameObject.Find("_GeneratedCrap").transform;
 							
 					//transform.LookAt(obj.transform.position);
-							Weap.Attack(obj,Anim);
+							//Weap.Attack(obj,Anim);
 					}
-					else
-					{
-						Target=obj;	
-						StartCoroutine(FollowTarget());
-					}
+					
 				break;
 			}
 		}

@@ -3,6 +3,7 @@ using System.Collections;
 
 public class SkyManager : MonoBehaviour {
 	public float Test;
+	public Gradient SunColor;
 	public Gradient SkyColor;
 	public AnimationCurve SkyIllum;
 	public AnimationCurve SkyTrans;
@@ -18,12 +19,13 @@ public class SkyManager : MonoBehaviour {
 
 
 	void Start () {
+		Application.targetFrameRate =(int) UpdateInterval;
 		RenderSettings.fogColor=SkyColor.Evaluate(((worldHours * 0.0416666666666667f ) + (worldMinutes * 6.944444444444444e-4f)));
 		RenderSettings.skybox.SetColor("_Tint" ,SkyColor.Evaluate(((worldHours * 0.0416666666666667f )+(worldMinutes * 6.944444444444444e-4f ))));
 		RenderSettings.skybox.SetFloat("_Blend", SkyTrans.Evaluate(((worldHours * 0.0416666666666667f )+(worldMinutes * 6.944444444444444e-4f))));
 		if(SkyLight!=null)
 		{
-			SkyLight.light.color=SkyColor.Evaluate(((worldHours * 0.0416666666666667f )+(worldMinutes*(1/1440))));
+			SkyLight.light.color=SunColor.Evaluate(((worldHours * 0.0416666666666667f )+(worldMinutes*(1/1440))));
 			SkyLight.light.intensity=SkyIllum.Evaluate(((worldHours * 0.0416666666666667f)+(worldMinutes*(1/1440))))*MaxSkyIllum;
 			SkyLight.transform.rotation= Quaternion.Euler( new Vector3( -(worldHours * 15) -(worldMinutes * .25f) - 90 ,0,0));
 		}
@@ -43,7 +45,7 @@ public class SkyManager : MonoBehaviour {
 			{
 				if(SkyLight!=null)
 				{
-					SkyLight.light.color=SkyColor.Evaluate(((worldHours * 0.0416666666666667f )+(worldMinutes*(1/1440))));
+					SkyLight.light.color=SunColor.Evaluate(((worldHours * 0.0416666666666667f )+(worldMinutes*(1/1440))));
 					SkyLight.light.intensity=SkyIllum.Evaluate(((worldHours * 0.0416666666666667f)+(worldMinutes*(1/1440))))*MaxSkyIllum;
 					SkyLight.transform.rotation= Quaternion.Euler( new Vector3( -(worldHours * 15) -(worldMinutes * .25f) - 90 ,0,0));
 				}
@@ -51,7 +53,7 @@ public class SkyManager : MonoBehaviour {
 				RenderSettings.skybox.SetColor("_Tint" ,SkyColor.Evaluate(((worldHours * 0.0416666666666667f )+(worldMinutes * 6.944444444444444e-4f ))));
 				RenderSettings.skybox.SetFloat("_Blend", SkyTrans.Evaluate(((worldHours * 0.0416666666666667f )+(worldMinutes * 6.944444444444444e-4f))));
 				//RenderSettings.skybox.SetColor("_Emmision",SkyColor.Evaluate(TotalMinutes*.0006944444444f));
-				yield return new WaitForEndOfFrame();
+				yield return new WaitForSeconds(1 / UpdateInterval);
 			}
 			yield return new WaitForEndOfFrame();
 		}
@@ -66,7 +68,7 @@ public class SkyManager : MonoBehaviour {
 				//if(worldSeconds>=59 )
 				//{
 					worldSeconds=0;
-					if(worldMinutes>=59)
+					if(worldMinutes>=60)
 					{
 						worldMinutes=0;
 						if(worldHours>=24)
@@ -77,12 +79,12 @@ public class SkyManager : MonoBehaviour {
 							worldHours++;
 					}
 					else
-					worldMinutes+=Time.smoothDeltaTime/TimeScale;
+					worldMinutes+=  TimeScale / 60;
 						//worldMinutes++;
 				//}
 				//else
 				//	worldSeconds++;
-				yield return new WaitForEndOfFrame();
+				yield return new WaitForSeconds(1 / UpdateInterval);
 			}
 			yield return new WaitForEndOfFrame();
 		}

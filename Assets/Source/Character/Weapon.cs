@@ -19,6 +19,8 @@ public class WeaponInfo{
 }
 
 public class Weapon : Item {
+
+	public WeaponInfo inf;
 	public WeaponType Type;
 
 	
@@ -41,7 +43,7 @@ public class Weapon : Item {
 	}
 	public void Shoot()
 	{
-		if(Type.currentClip>0 && CanShoot)
+		if(inf.currentClip>0 && CanShoot)
 		{
 			if(Muzzle != null && MuzzleFlash != null)
 				Instantiate(MuzzleFlash,Muzzle.position,Muzzle.rotation);
@@ -49,14 +51,14 @@ public class Weapon : Item {
 				FireSound.Play();
 			if(Bullet!=null)
 				(Instantiate(Bullet,Muzzle.position,Muzzle.rotation) as GameObject).transform.parent=GameObject.Find("GeneratedCrap").transform;
-			Type.Rounds--;
-			Type.currentClip--;
+			inf.Rounds--;
+			inf.currentClip--;
 		}
 		else if(CanShoot)
 			if(Empty!=null)
 			{
 				Empty.Play();
-			StartCoroutine(Reload(Type.ReloadTime));
+			StartCoroutine(Reload(inf.ReloadTime));
 			}
 	}
 	public IEnumerator FocusScope()
@@ -76,16 +78,19 @@ public class Weapon : Item {
 	{
 		CanShoot=false;
 		yield return new WaitForSeconds(time);
-		if(Type.Rounds>Type.ClipSize){
-			Type.Clips--;
-			Type.currentClip=Type.ClipSize;
+		if(inf.Rounds>inf.ClipSize){
+			inf.Clips--;
+			inf.currentClip=inf.ClipSize;
 		}
 		else
-			Type.currentClip=Type.Rounds;
+			inf.currentClip=inf.Rounds;
 		if(ReloadClick!=null)
 			ReloadClick.Play();
 		CanShoot=true;
 	}
 
+	public void DrawHud(){
+		GUI.Label(new Rect(Screen.width*.8f,Screen.height*.8f,64,32),"" + inf.currentClip+"-"+(inf.Clips-1)* inf.ClipSize);
+	}
 
 }

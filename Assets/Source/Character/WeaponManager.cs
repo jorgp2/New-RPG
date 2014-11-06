@@ -23,7 +23,7 @@ public class WeaponManager : MonoBehaviour {
 			GUI.Box(new Rect(Screen.width * .1f, Screen.height *.1f,Screen.width*.8f,Screen.height*.8f),"weapons");
 			for (int i = 0; i < Weapons.Length; i++) {
 				if(Weapons[i] != null && Weapons[i].con!=null)
-					if(Weapons[i].DrawIcon(new Rect(new Rect(Screen.width * (.1f + .2f*i), Screen.height *.15f,Screen.width*.2f,Screen.height*.2f))))
+					if(Weapons[i].DrawItem(new Rect(new Rect(Screen.width * (.1f + .2f*i), Screen.height *.15f,Screen.width*.2f,Screen.height*.2f))))
 					{
 						SelectedWeapon.gameObject.SetActive(false);
 						SelectedWeapon= Weapons[i];
@@ -36,6 +36,7 @@ public class WeaponManager : MonoBehaviour {
 			Draw = GUI.Button (new Rect(Screen.width * .9f, Screen.height *.8f,Screen.width*.1f,Screen.height*.05f),"Weapons");
 	}
 
+	/*
 	public void Attack(GameObject obj,Animator Anim){
 		if(obj.GetComponent<EnemyManager>()!=null){
 			GameObject tmp= Instantiate(DmgText) as GameObject;
@@ -55,5 +56,7 @@ public class WeaponManager : MonoBehaviour {
 			obj.GetComponent<EnemyHandle>().DoDamage(SelectedWeapon.Inf.Damage);
 		}
 		Anim.Play("Attack",SelectedWeapon.WeaponAnimLayerIndex);
+
 	}
+	*/
 }

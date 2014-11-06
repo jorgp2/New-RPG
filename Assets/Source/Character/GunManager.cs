@@ -14,7 +14,7 @@ public class GunManager : MonoBehaviour {
 
 	void OnGUI()
 	{
-		GUI.Label(new Rect(Screen.width*.8f,Screen.height*.8f,64,32),"" + SelectedWeapon.currentClip+"-"+(SelectedWeapon.Clips-1)* SelectedWeapon.ClipSize);
+
 	}
 	
 	void Update () {
@@ -58,35 +58,30 @@ public class GunManager : MonoBehaviour {
 	}
 	IEnumerator Shoot()
 	{	
-		if((int)SelectedWeapon.Ftype==0)
 		while(Input.GetButton("Primary"))
 		{
 			SelectedWeapon.Shoot();
-			yield return new WaitForSeconds(SelectedWeapon.FireRate);
+			yield return new WaitForSeconds(SelectedWeapon.inf.FireRate);
 		}
-		else if((int)SelectedWeapon.Ftype==2)
-		{
-			SelectedWeapon.Shoot();
-			yield return new WaitForSeconds(SelectedWeapon.ReloadTime);
-		}
+
 	}
 	public IEnumerator AiShoot(){
-		if((int)SelectedWeapon.Ftype==0)
+		if((int)SelectedWeapon.inf.Ftype==0)
 		{
 			SelectedWeapon.Shoot();
-			yield return new WaitForSeconds(SelectedWeapon.FireRate);
+			yield return new WaitForSeconds(SelectedWeapon.inf.FireRate);
 		}
-			else if((int)SelectedWeapon.Ftype==2)
+		else if((int)SelectedWeapon.inf.Ftype==2)
 		{
 			SelectedWeapon.Shoot();
-			yield return new WaitForSeconds(SelectedWeapon.ReloadTime);
+			yield return new WaitForSeconds(SelectedWeapon.inf.ReloadTime);
 		}
 	}
 	IEnumerator ReloadWeapon()
 	{
 		//if(animation!=null)
 			//yield return StartCoroutine (WaitForAnimation("Reload",.9f,true));
-		SelectedWeapon.Reload(SelectedWeapon.ReloadTime);
+		SelectedWeapon.Reload(SelectedWeapon.inf.ReloadTime);
 			//yield return StartCoroutine(WaitForAnimation("Reload",1f,false));
 		//animation.Stop("Reload");
 		CanShoot=true;
