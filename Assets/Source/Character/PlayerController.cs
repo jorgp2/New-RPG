@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour {
 	public WeaponManager Weap;
     public float MaxDistance = 5f;
 
-	public Inventory Inv;
+	public Inventory Inv = new Inventory ();
 	public GameObject Target;
 
 	public int Health=30;
@@ -54,8 +54,9 @@ public class PlayerController : MonoBehaviour {
 		while(true)
 			if(Time.timeScale>0)
 			{
-				if(Input.GetButton("Click"))
+				if(Input.GetButton("Interact"))
 				{
+				Debug.Log("Interact");
 					StartCoroutine(ProcessMouseClick());
 				}
 				
@@ -97,13 +98,14 @@ public class PlayerController : MonoBehaviour {
 					}
 				break;
 				case "Interact":
+
 					if(Sparks!=null)
 					{
 						(Instantiate(Sparks,Test.point,Quaternion.Euler(new Vector3(0,0,0))) as GameObject).transform.parent=GameObject.Find("_GeneratedCrap").transform;
 					}
 					CanMove=false;
 					//Time.timeScale=0;
-					obj.GetComponent<Interact>().MouseAction(this);
+					obj.GetComponent<Interact>().MouseAction(this,Input.mousePosition);
 				break;
 				case "Prop":
 					if(Vector3.Distance(transform.position,obj.transform.position)<5)
