@@ -3,8 +3,10 @@ using System.Collections;
 
 public class WeaponManager : MonoBehaviour {
 	public Weapon SelectedWeapon;
-	public Weapon[] Weapons;
+	public ArrayList Weapons = new ArrayList();
 	public bool Draw;
+
+	public Transform WeaponBasePosition;
 	
 	public GameObject DmgText;
 	// Use this for initialization
@@ -20,20 +22,37 @@ public class WeaponManager : MonoBehaviour {
 	void OnGUI(){
 		if (Draw) 
 		{
-			GUI.Box(new Rect(Screen.width * .1f, Screen.height *.1f,Screen.width*.8f,Screen.height*.8f),"weapons");
-			for (int i = 0; i < Weapons.Length; i++) {
-				if(Weapons[i] != null && Weapons[i].con!=null)
-					if(Weapons[i].DrawItem(new Rect(new Rect(Screen.width * (.1f + .2f*i), Screen.height *.15f,Screen.width*.2f,Screen.height*.2f))))
+			GUI.Box(new Rect(Screen.width * .1f, Screen.height *.6f,Screen.width*.8f,Screen.height*.2f),"weapons");
+			for (int i = 0; i < Weapons.Count; i++) {
+				if(Weapons[i] != null && (Weapons[i]as Item).con!=null)
+					if((Weapons[i]as Item ).DrawItem(new Rect(new Rect(Screen.width * (.1f + .2f*i), Screen.height * .6f,Screen.width*.2f,Screen.height*.2f))))
 					{
-						SelectedWeapon.gameObject.SetActive(false);
-						SelectedWeapon= Weapons[i];
-					SelectedWeapon.gameObject.SetActive(true);
+						ArmWeapon(i);
 					}
 			}
-			Draw = !GUI.Button (new Rect(Screen.width * .8f, Screen.height *.8f,Screen.width*.1f,Screen.height*.05f),"Close");
 		}
-		else 
-			Draw = GUI.Button (new Rect(Screen.width * .9f, Screen.height *.8f,Screen.width*.1f,Screen.height*.05f),"Weapons");
+
+	}
+	public void ArmWeapon(int x)
+	{
+		Weapon tmp = Weapons [x] as Weapon;
+		GameObject tmpx = tmp.gameObject;
+		if (!tmpx.activeInHierarchy) 
+		{
+			tmpx.transform.position=WeaponBasePosition.position + tmp.offset;
+			tmpx.GetComponent<Rigidbody>().isKinematic=true;
+			tmpx.GetComponent<Collider>().enabled=false;
+			tmpx.transform.rotation=Quaternion.Euler( WeaponBasePosition.rotation.eulerAngles + tmp.rotationOffset);
+			tmpx.transform.parent=WeaponBasePosition;
+			tmpx.SetActive(true);
+		}
+	}
+
+	public void AddWeapon(Item x){
+		Weapons.Add(x as Weapon);
+		if (Weapons.Count == 1)
+			ArmWeapon (0);
+	
 	}
 
 	/*

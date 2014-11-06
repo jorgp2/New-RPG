@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour {
 	public WeaponManager Weap;
     public float MaxDistance = 5f;
 
-	public Inventory Inv = new Inventory ();
+	public Inventory Inv ;
 	public GameObject Target;
 
 	public int Health=30;
@@ -29,16 +29,28 @@ public class PlayerController : MonoBehaviour {
 	public GameObject EnemySparks;
 	// Use this for initialization
 	void Start () {
+		Inv = new Inventory (this);
 		if(NavAgent==null)
 			NavAgent=GetComponent<NavMeshAgent>();
 		StartCoroutine(DoInput());
 	}
 	void OnGUI(){
 		GUI.Box(new Rect(Screen.width * .1f, Screen.height * .8f, Screen.width * .2f, Screen.height * .1f), "HP : " + Health + "\nMP : " + Magic + " \nXp : " + XP);
-		if(!Inv.Draw && GUI.Button(new Rect( Screen.width * .85f, Screen.height * .85f, Screen.width * .1f, Screen.height * .05f),"Inventory"))
-			Inv.Draw=true;
-		if(Inv.Draw==true)
-			Inv.DrawInventory();
+		if (!Inv.Draw && GUI.Button (new Rect (Screen.width * .85f, Screen.height * .85f, Screen.width * .1f, Screen.height * .05f), "Inventory")) 
+		{
+			Inv.Draw = true;
+			Weap.Draw=true;
+		}
+		if (Inv.Draw == true) 
+		{
+			Inv.DrawInventory ();
+			if (GUI.Button(new Rect(Screen.width * .8f, Screen.height * .8f, Screen.width * .1f, Screen.height * .05f), "Close"))
+			{
+				Inv.Draw = false;
+				Weap.Draw = false;
+				Time.timeScale = 1;
+			}
+		}
 		if(Anim==null)
 			Anim=GetComponent<Animator>();
 
@@ -56,7 +68,6 @@ public class PlayerController : MonoBehaviour {
 			{
 				if(Input.GetButton("Interact"))
 				{
-				Debug.Log("Interact");
 					StartCoroutine(ProcessMouseClick());
 				}
 				

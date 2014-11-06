@@ -1,9 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+public enum ItemType:int {Base,Weapon,Prop}
+
 [System.Serializable]
 public class Item : Interact {
 
+	public ItemType itemType=ItemType.Base;
 	public GUIContent con;
 	public Vector2 TooltipPos;
 	public bool showGUITooltip=false;
@@ -25,6 +28,7 @@ public class Item : Interact {
 			if(DrawItem(new Rect(TooltipPos.x,TooltipPos.y, Screen.width * .2f, Screen.height * .4f)))
 			{
 				PC.Inv.inventory.Add(this);
+
 				showGUITooltip=false;
 				gameObject.SetActive(false);
 			}
@@ -43,6 +47,7 @@ public class Item : Interact {
 	}
 	public override void MouseAction(PlayerController play, Vector2 MousePos)
 	{
+		PC = play;
 		showGUITooltip=true;
 		TooltipPos = MousePos;
 	}

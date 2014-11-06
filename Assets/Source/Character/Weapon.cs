@@ -20,10 +20,14 @@ public class WeaponInfo{
 
 public class Weapon : Item {
 
+
 	public WeaponInfo inf;
 	public WeaponType Type;
 
-	
+	public Vector3 offset;
+	public Vector3 rotationOffset;
+
+
 	public GameObject ScopePosition;
 	public Transform CameraPosition;
 	public AudioSource FireSound;
@@ -33,8 +37,9 @@ public class Weapon : Item {
 	public GameObject MuzzleFlash;
 	public GameObject Bullet;
 	public bool CanShoot=true;
+
 	void Start () {
-	
+		itemType = ItemType.Weapon;
 	}
 	
 	
