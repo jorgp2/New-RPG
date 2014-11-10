@@ -31,7 +31,7 @@ public class Inventory
                     	    {
 								switch (item.itemType) {
 									case ItemType.Weapon:
-										PC.Weap.Weapons.Add(inventory[c] as Weapon);
+										PC.Weap.AddWeapon(inventory[c] as Weapon);
 										inventory.RemoveAt(c);
 										c--;
 									break;

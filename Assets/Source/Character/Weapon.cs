@@ -4,6 +4,7 @@ using System.Collections;
 public enum WeaponType {Melee, Range, Magic};
 public enum FireType {Auto, SemiAuto, Single};
 
+[System.Serializable]
 public class WeaponInfo{
 	
 	public WeaponType Type;
@@ -46,25 +47,27 @@ public class Weapon : Item {
 	void Update () {
 	
 	}
-	public void Shoot()
+	public IEnumerator Shoot()
 	{
-		if(inf.currentClip>0 && CanShoot)
+		while ( /* Input.GetButton("Fire1") && */ inf.currentClip > 0 && CanShoot) 
 		{
-			if(Muzzle != null && MuzzleFlash != null)
-				Instantiate(MuzzleFlash,Muzzle.position,Muzzle.rotation);
-			if(FireSound != null)
-				FireSound.Play();
-			if(Bullet!=null)
-				(Instantiate(Bullet,Muzzle.position,Muzzle.rotation) as GameObject).transform.parent=GameObject.Find("GeneratedCrap").transform;
-			inf.Rounds--;
-			inf.currentClip--;
+					if (Muzzle != null && MuzzleFlash != null)
+							Instantiate (MuzzleFlash, Muzzle.position, Muzzle.rotation);
+					if (FireSound != null)
+							FireSound.Play ();
+					if (Bullet != null)
+							(Instantiate (Bullet, Muzzle.position, Muzzle.rotation) as GameObject).transform.parent = GameObject.Find ("GeneratedCrap").transform;
+					inf.Rounds--;
+					inf.currentClip--;
+			yield return new WaitForSeconds(inf.FireRate);
 		}
-		else if(CanShoot)
-			if(Empty!=null)
-			{
-				Empty.Play();
-			StartCoroutine(Reload(inf.ReloadTime));
-			}
+		if (inf.currentClip <=0   && CanShoot) {
+			if(Empty != null)
+				Empty.Play ();
+			StartCoroutine (Reload (inf.ReloadTime));
+			yield return new WaitForEndOfFrame();
+		}
+		yield return new WaitForEndOfFrame();
 	}
 	public IEnumerator FocusScope()
 	{

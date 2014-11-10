@@ -70,10 +70,13 @@ public class PlayerController : MonoBehaviour {
 				{
 					StartCoroutine(ProcessMouseClick());
 				}
-				
+				if(Input.GetButton("Fire1"))
+				{
+				Weap.StartCoroutine(Weap.tryShoot());
+				}
 				if(Anim.GetCurrentAnimatorStateInfo(0).IsName("Walk") && NavAgent.remainingDistance<NavAgent.stoppingDistance)
 				Anim.Play("Idle");
-			yield return new WaitForSeconds(.05f);
+			yield return new WaitForEndOfFrame();
 			}
 			else
 				yield return new WaitForEndOfFrame();

@@ -5,10 +5,13 @@ public class SkyManager : MonoBehaviour {
 	public float Test;
 	public Gradient SunColor;
 	public Gradient SkyColor;
+	public Gradient FogColor;
 	public AnimationCurve SkyIllum;
 	public AnimationCurve SkyTrans;
+	public AnimationCurve Foglevel;
 	public GameObject SkyLight;
 	public float MaxSkyIllum=6;
+	public float MaxFogLevel=.025f;
 
 	public float TimeScale=1f;
 	public float worldHours=1;
@@ -20,7 +23,8 @@ public class SkyManager : MonoBehaviour {
 
 	void Start () {
 		Application.targetFrameRate =(int) UpdateInterval;
-		RenderSettings.fogColor=SkyColor.Evaluate(((worldHours * 0.0416666666666667f ) + (worldMinutes * 6.944444444444444e-4f)));
+		RenderSettings.fogColor=FogColor.Evaluate(((worldHours * 0.0416666666666667f ) + (worldMinutes * 6.944444444444444e-4f)));
+		RenderSettings.fogDensity = Foglevel.Evaluate (((worldHours * 0.0416666666666667f ) + (worldMinutes * 6.944444444444444e-4f))) * MaxFogLevel;
 		RenderSettings.skybox.SetColor("_Tint" ,SkyColor.Evaluate(((worldHours * 0.0416666666666667f )+(worldMinutes * 6.944444444444444e-4f ))));
 		RenderSettings.skybox.SetFloat("_Blend", SkyTrans.Evaluate(((worldHours * 0.0416666666666667f )+(worldMinutes * 6.944444444444444e-4f))));
 		if(SkyLight!=null)

@@ -19,6 +19,11 @@ public class WeaponManager : MonoBehaviour {
 	
 	}
 
+	public void tryShoot(){
+		if (SelectedWeapon != null && SelectedWeapon.inf.Rounds > 0)
+			SelectedWeapon.Shoot ();
+	}
+
 	void OnGUI(){
 		if (Draw) 
 		{
@@ -46,12 +51,17 @@ public class WeaponManager : MonoBehaviour {
 			tmpx.transform.parent=WeaponBasePosition;
 			tmpx.SetActive(true);
 		}
+		SelectedWeapon = tmp;
 	}
 
 	public void AddWeapon(Item x){
-		Weapons.Add(x as Weapon);
-		if (Weapons.Count == 1)
-			ArmWeapon (0);
+		if (Weapons.Count == 0) {
+				Weapons.Add (x as Weapon);
+				ArmWeapon (0);
+		} else 
+		{
+			Weapons.Add (x as Weapon);
+		}
 	
 	}
 
