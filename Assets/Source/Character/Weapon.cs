@@ -49,22 +49,24 @@ public class Weapon : Item {
 	}
 	public IEnumerator Shoot()
 	{
-		while ( /* Input.GetButton("Fire1") && */ inf.currentClip > 0 && CanShoot) 
+		while (  Input.GetButton("Fire1") &&  inf.currentClip > 0 && CanShoot) 
 		{
 					if (Muzzle != null && MuzzleFlash != null)
-							Instantiate (MuzzleFlash, Muzzle.position, Muzzle.rotation);
+						(Instantiate (MuzzleFlash, Muzzle.position, Muzzle.rotation)as GameObject).transform.parent = GameObject.Find ("_GeneratedCrap").transform;
 					if (FireSound != null)
 							FireSound.Play ();
 					if (Bullet != null)
-							(Instantiate (Bullet, Muzzle.position, Muzzle.rotation) as GameObject).transform.parent = GameObject.Find ("GeneratedCrap").transform;
+							(Instantiate (Bullet, Muzzle.position, Muzzle.rotation) as GameObject).transform.parent = GameObject.Find ("_GeneratedCrap").transform;
 					inf.Rounds--;
 					inf.currentClip--;
 			yield return new WaitForSeconds(inf.FireRate);
 		}
-		if (inf.currentClip <=0   && CanShoot) {
+		if (inf.currentClip <=0 && CanShoot) {
 			if(Empty != null)
 				Empty.Play ();
-			StartCoroutine (Reload (inf.ReloadTime));
+			if(inf.Rounds>0)
+				StartCoroutine (Reload (inf.ReloadTime));
+
 			yield return new WaitForEndOfFrame();
 		}
 		yield return new WaitForEndOfFrame();

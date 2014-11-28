@@ -6,6 +6,7 @@ public class WeaponManager : MonoBehaviour {
 	public ArrayList Weapons = new ArrayList();
 	public bool Draw;
 
+
 	public Transform WeaponBasePosition;
 	
 	public GameObject DmgText;
@@ -19,9 +20,13 @@ public class WeaponManager : MonoBehaviour {
 	
 	}
 
-	public void tryShoot(){
-		if (SelectedWeapon != null && SelectedWeapon.inf.Rounds > 0)
-			SelectedWeapon.Shoot ();
+	public IEnumerator tryShoot(){
+
+			if ( SelectedWeapon != null && SelectedWeapon.inf.Rounds > 0)
+			SelectedWeapon.StartCoroutine(SelectedWeapon.Shoot());
+			yield return new WaitForEndOfFrame ();
+		
+	
 	}
 
 	void OnGUI(){

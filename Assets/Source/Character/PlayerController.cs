@@ -58,7 +58,10 @@ public class PlayerController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
+		if(Input.GetButtonDown("Fire1") && Weap.SelectedWeapon.CanShoot && Weap.SelectedWeapon.inf.Rounds>0)
+		{
+			Weap.StartCoroutine(Weap.tryShoot());
+		}
 	}
 
 	IEnumerator DoInput()
@@ -70,10 +73,7 @@ public class PlayerController : MonoBehaviour {
 				{
 					StartCoroutine(ProcessMouseClick());
 				}
-				if(Input.GetButton("Fire1"))
-				{
-				Weap.StartCoroutine(Weap.tryShoot());
-				}
+				
 				if(Anim.GetCurrentAnimatorStateInfo(0).IsName("Walk") && NavAgent.remainingDistance<NavAgent.stoppingDistance)
 				Anim.Play("Idle");
 			yield return new WaitForEndOfFrame();
