@@ -58,9 +58,13 @@ public class PlayerController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(Input.GetButtonDown("Fire1") && Weap.SelectedWeapon.CanShoot && Weap.SelectedWeapon.inf.Rounds>0)
+		if(Input.GetButtonDown("Fire1")  && Weap.SelectedWeapon != null)
 		{
 			Weap.StartCoroutine(Weap.tryShoot());
+		}
+		
+		if (Input.GetButton ("Fire2") && Weap.SelectedWeapon != null) {
+			Weap.StartCoroutine(Weap.CycleScope());		
 		}
 	}
 

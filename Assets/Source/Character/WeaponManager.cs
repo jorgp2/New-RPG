@@ -17,7 +17,7 @@ public class WeaponManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+
 	}
 
 	public IEnumerator tryShoot(){
@@ -27,6 +27,14 @@ public class WeaponManager : MonoBehaviour {
 			yield return new WaitForEndOfFrame ();
 		
 	
+	}
+
+	public IEnumerator CycleScope(){
+		if (SelectedWeapon.ScopeFocused)
+			SelectedWeapon.StartCoroutine (SelectedWeapon.UnFocusScope());
+		else
+			SelectedWeapon.StartCoroutine (SelectedWeapon.FocusScope());
+		yield return new WaitForEndOfFrame();
 	}
 
 	void OnGUI(){

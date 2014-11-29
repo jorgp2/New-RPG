@@ -28,7 +28,8 @@ public class Weapon : Item {
 	public Vector3 offset;
 	public Vector3 rotationOffset;
 
-
+	public GameObject ScopeCamera;
+	public bool ScopeFocused=false;
 	public GameObject ScopePosition;
 	public Transform CameraPosition;
 	public AudioSource FireSound;
@@ -40,6 +41,7 @@ public class Weapon : Item {
 	public bool CanShoot=true;
 
 	void Start () {
+		ScopeCamera = GameObject.Find ("Scope Camera");
 		itemType = ItemType.Weapon;
 	}
 	
@@ -48,40 +50,73 @@ public class Weapon : Item {
 	
 	}
 	public IEnumerator Shoot()
-	{
-		while (  Input.GetButton("Fire1") &&  inf.currentClip > 0 && CanShoot) 
-		{
-					if (Muzzle != null && MuzzleFlash != null)
-						(Instantiate (MuzzleFlash, Muzzle.position, Muzzle.rotation)as GameObject).transform.parent = GameObject.Find ("_GeneratedCrap").transform;
-					if (FireSound != null)
-							FireSound.Play ();
-					if (Bullet != null)
-							(Instantiate (Bullet, Muzzle.position, Muzzle.rotation) as GameObject).transform.parent = GameObject.Find ("_GeneratedCrap").transform;
-					inf.Rounds--;
-					inf.currentClip--;
-			yield return new WaitForSeconds(inf.FireRate);
-		}
-		if (inf.currentClip <=0 && CanShoot) {
-			if(Empty != null)
-				Empty.Play ();
-			if(inf.Rounds>0)
-				StartCoroutine (Reload (inf.ReloadTime));
+	{  
 
-			yield return new WaitForEndOfFrame();
-		}
+		switch (inf.Ftype) {
+				case FireType.Auto:
+					while (  Input.GetButton("Fire1") &&  inf.currentClip > 0 && CanShoot) 
+					{
+						if (Muzzle != null && MuzzleFlash != null)
+							(Instantiate (MuzzleFlash, Muzzle.position, Muzzle.rotation)as GameObject).transform.parent = GameObject.Find ("_GeneratedCrap").transform;
+						if (FireSound != null)
+							FireSound.Play ();
+						if (Bullet != null)
+							(Instantiate (Bullet, Muzzle.position, Muzzle.rotation) as GameObject).transform.parent = GameObject.Find ("_GeneratedCrap").transform;
+						inf.Rounds--;
+						inf.currentClip--;
+						yield return new WaitForSeconds(inf.FireRate);
+					}
+					if (inf.currentClip <=0 && CanShoot) {
+						if(Empty != null)
+							Empty.Play ();
+						if(inf.Rounds>0)
+							StartCoroutine (Reload (inf.ReloadTime));
+						
+						yield return new WaitForEndOfFrame();
+					}
+						break;
+					case FireType.Single:
+						if(inf.currentClip > 0 && CanShoot)
+						{
+							if (Muzzle != null && MuzzleFlash != null)
+								(Instantiate (MuzzleFlash, Muzzle.position, Muzzle.rotation)as GameObject).transform.parent = GameObject.Find ("_GeneratedCrap").transform;
+							if (FireSound != null)
+								FireSound.Play ();
+							if (Bullet != null)
+								(Instantiate (Bullet, Muzzle.position, Muzzle.rotation) as GameObject).transform.parent = GameObject.Find ("_GeneratedCrap").transform;
+							inf.Rounds--;
+							inf.currentClip--;
+							yield return new WaitForSeconds(inf.FireRate);
+						}
+
+						if (inf.currentClip <=0 && CanShoot) {
+							if(Empty != null)
+								Empty.Play ();
+							if(inf.Rounds>0)
+								StartCoroutine (Reload (inf.ReloadTime));
+							
+							yield return new WaitForEndOfFrame();
+						}
+					break;
+				}
+
 		yield return new WaitForEndOfFrame();
 	}
 	public IEnumerator FocusScope()
 	{
 		GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>().enabled =false;
-		ScopePosition.camera.enabled=true;
+		ScopeCamera.transform.position = ScopePosition.transform.position;
+		ScopeCamera.GetComponent<Camera>().enabled = true;
+		ScopeFocused = !ScopeFocused;
 		yield return new WaitForEndOfFrame();
+
 	}
 	
 	public IEnumerator UnFocusScope()
 	{
 		GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>().enabled =true;
-		ScopePosition.camera.enabled=false;
+		ScopeCamera.GetComponent<Camera>().enabled = false;
+		ScopeFocused = !ScopeFocused;
 		yield return new WaitForEndOfFrame();
 	}
 	public IEnumerator Reload(float time)
