@@ -20,17 +20,16 @@ public class WeaponManager : MonoBehaviour {
 
 	}
 
-	public IEnumerator tryShoot(){
-
-			if ( SelectedWeapon != null && SelectedWeapon.inf.Rounds > 0)
-			SelectedWeapon.StartCoroutine(SelectedWeapon.Shoot());
+	public IEnumerator tryAttack(){
+		 if(SelectedWeapon != null )
+			SelectedWeapon.StartCoroutine(SelectedWeapon.Attack());
 			yield return new WaitForEndOfFrame ();
 		
 	
 	}
 
 	public IEnumerator CycleScope(){
-		if (SelectedWeapon.ScopeFocused)
+		if (SelectedWeapon.WVars.ScopeFocused)
 			SelectedWeapon.StartCoroutine (SelectedWeapon.UnFocusScope());
 		else
 			SelectedWeapon.StartCoroutine (SelectedWeapon.FocusScope());
@@ -57,10 +56,10 @@ public class WeaponManager : MonoBehaviour {
 		GameObject tmpx = tmp.gameObject;
 		if (!tmpx.activeInHierarchy) 
 		{
-			tmpx.transform.position=WeaponBasePosition.position + tmp.offset;
+			tmpx.transform.position=WeaponBasePosition.position + tmp.WVars.offset;
 			tmpx.GetComponent<Rigidbody>().isKinematic=true;
 			tmpx.GetComponent<Collider>().enabled=false;
-			tmpx.transform.rotation=Quaternion.Euler( WeaponBasePosition.rotation.eulerAngles + tmp.rotationOffset);
+			tmpx.transform.rotation=Quaternion.Euler( WeaponBasePosition.rotation.eulerAngles + tmp.WVars.rotationOffset);
 			tmpx.transform.parent=WeaponBasePosition;
 			tmpx.SetActive(true);
 		}

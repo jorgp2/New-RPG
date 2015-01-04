@@ -60,7 +60,7 @@ public class PlayerController : MonoBehaviour {
 	void Update () {
 		if(Input.GetButtonDown("Fire1")  && Weap.SelectedWeapon != null)
 		{
-			Weap.StartCoroutine(Weap.tryShoot());
+			Weap.StartCoroutine(Weap.tryAttack());
 		}
 		
 		if (Input.GetButton ("Fire2") && Weap.SelectedWeapon != null) {
