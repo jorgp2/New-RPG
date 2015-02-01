@@ -62,10 +62,7 @@ public class PlayerController : MonoBehaviour {
 		{
 			Weap.StartCoroutine(Weap.tryAttack());
 		}
-		
-		if (Input.GetButton ("Fire2") && Weap.SelectedWeapon != null) {
-			Weap.StartCoroutine(Weap.CycleScope());		
-		}
+
 	}
 
 	IEnumerator DoInput()
@@ -77,6 +74,12 @@ public class PlayerController : MonoBehaviour {
 				{
 					StartCoroutine(ProcessMouseClick());
 				}
+
+			if(Input.GetButton ("Inventory"))
+			{
+				Inv.Draw = !Inv.Draw;
+				Weap.Draw=!Weap.Draw;
+			}
 				
 				if(Anim.GetCurrentAnimatorStateInfo(0).IsName("Walk") && NavAgent.remainingDistance<NavAgent.stoppingDistance)
 				Anim.Play("Idle");
@@ -100,7 +103,9 @@ public class PlayerController : MonoBehaviour {
 	IEnumerator ProcessMouseClick()
 	{
 		RaycastHit Test;
-		if(Physics.Raycast(camera.ScreenPointToRay(Input.mousePosition), out Test))
+		//if(Physics.Raycast(camera.ScreenPointToRay(new Vector3(Screen.width/2, Screen.height/2, 0)), out Test))
+
+		if(Physics.Raycast(camera.ScreenPointToRay( Input.mousePosition), out Test))
 		{
 			GameObject obj= Test.collider.gameObject;
 			switch (Test.collider.tag) {
@@ -123,7 +128,7 @@ public class PlayerController : MonoBehaviour {
 					}
 					CanMove=false;
 					//Time.timeScale=0;
-					obj.GetComponent<Interact>().MouseAction(this,Input.mousePosition);
+				obj.GetComponent<Interact>().MouseAction(this, new Vector2(Screen.width * .2f, Screen.height * .2f));
 				break;
 				case "Prop":
 					if(Vector3.Distance(transform.position,obj.transform.position)<5)
