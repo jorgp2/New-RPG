@@ -24,4 +24,9 @@ public class PauseMenu : MonoBehaviour {
 			paused=!paused;
 		}
 	}
+
+	public void Pause(){
+	thisCanvas.gameObject.SetActive(false);
+			paused=!paused;
+	}
 }
