@@ -28,7 +28,7 @@ public class CraftingTable : Interact {
 			GUI.Box(new Rect(TooltipPos.x,TooltipPos.y, Screen.width * .2f, Screen.height * .4f), "Do you want to craft?");
 			if(DrawItem(new Rect(TooltipPos.x,TooltipPos.y, Screen.width * .2f, Screen.height * .4f)))
 			{
-				
+				(GameObject.Find("Crafting Menu") as GameObject).GetComponent<CraftingMenu>().showCrafting();
 				showGUITooltip=false;
 			}
 		}

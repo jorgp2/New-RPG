@@ -13,6 +13,28 @@ public class Inventory
 		PC = pc;
 		}
 
+	public bool hasItemOfType<t>( )
+	{
+		if (inventory == null || inventory.Count <= 0)
+				return false;
+		for (int i = 0; i < inventory.Count; i++) {
+			if(inventory[i] is t)
+				return true;
+		}
+		return false;
+	}
+
+	public Item[] getItemsOfType<t>(){
+		if (inventory == null || inventory.Count <= 0)
+			return null;
+		ArrayList temp = new ArrayList ();
+		for (int i = 0; i < inventory.Count; i++) {
+			if(inventory[i] is t)
+				temp.Add(inventory[i]);
+		}
+		return temp.ToArray () as Item[];
+	}
+
     public void DrawInventory()
     {
         if (Draw)

@@ -19,8 +19,13 @@ public class CraftingMenu : MonoBehaviour {
 		}
 	}
 
-	public void hideCrafting(){
+	public void showCrafting(){
 		thisCanvas.gameObject.SetActive(true);
+		Crafting=!Crafting;
+		}
+
+	public void hideCrafting(){
+		thisCanvas.gameObject.SetActive(false);
 		Crafting=!Crafting;
 		}
 
