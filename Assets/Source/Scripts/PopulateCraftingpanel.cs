@@ -48,7 +48,9 @@ public class PopulateCraftingpanel : MonoBehaviour {
 			if(AvailableCraftingItems[i]!=null)
 			{
 				GameObject tmp = Instantiate(defaultItem, new Vector3( -290 + (100 * i), 36, 0), Quaternion.identity)as GameObject;
-				//tmp.GetComponent<CanvasRenderer>().
+				//Change the default texture, DERP.
+				tmp.GetComponent<RawMaterialsBoxItem>().setUpItem(AvailableCraftingItems[i] as Item);
+
 				tmp.transform.SetParent( thisCanvas.transform,false);
 			}
 		}
