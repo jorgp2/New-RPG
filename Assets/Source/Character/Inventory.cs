@@ -24,7 +24,7 @@ public class Inventory
 		return false;
 	}
 
-	public Item[] getItemsOfType<t>(){
+	public ArrayList getItemsOfType<t>(){
 		if (inventory == null || inventory.Count <= 0)
 			return null;
 		ArrayList temp = new ArrayList ();
@@ -32,8 +32,12 @@ public class Inventory
 			if(inventory[i] is t)
 				temp.Add(inventory[i]);
 		}
-		return temp.ToArray () as Item[];
+		return temp;
 	}
+
+	public ArrayList getAllItems(){
+		return inventory;
+		}
 
     public void DrawInventory()
     {

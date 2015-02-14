@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 public class PlayerController : MonoBehaviour {
 
-	public Camera camera;
+	public Camera thisCamera;
 	public NavMeshAgent NavAgent;
 	public Animator Anim;
 	public WeaponManager Weap;
@@ -105,7 +105,7 @@ public class PlayerController : MonoBehaviour {
 		RaycastHit Test;
 		//if(Physics.Raycast(camera.ScreenPointToRay(new Vector3(Screen.width/2, Screen.height/2, 0)), out Test))
 
-		if(Physics.Raycast(camera.ScreenPointToRay( Input.mousePosition), out Test))
+		if(Physics.Raycast(thisCamera.ScreenPointToRay( Input.mousePosition), out Test))
 		{
 			GameObject obj= Test.collider.gameObject;
 			switch (Test.collider.tag) {

@@ -6,7 +6,7 @@ public class GunManager : MonoBehaviour {
 	public Weapon[] weapons;
 	public int currentWeaponIndex;
 	public bool CanShoot;
-	public Animation animation;
+	//public Animation animation;
 	public bool ScopeFocused;
 	void Start () {
 	
