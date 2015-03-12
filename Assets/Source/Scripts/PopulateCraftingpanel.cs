@@ -22,38 +22,44 @@ public class PopulateCraftingpanel : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (CraftingBox.gameObject.GetComponent<CraftingMenu> ().Crafting) 
-		{
-			UpdateAvailableItems();
-			if(!IsDrawingPanel)
-			{
-				DrawCraftingItems();
-				IsDrawingPanel=true;
+		if (CraftingBox.gameObject.GetComponent<CraftingMenu> ().Crafting) {
+			UpdateAvailableItems ();
+			if (!IsDrawingPanel) {
+					DrawCraftingItems ();
+					IsDrawingPanel = true;
 			}
 
-		}
-		else if(IsDrawingPanel)
-			IsDrawingPanel=false;
+			} else if (IsDrawingPanel) {
+				IsDrawingPanel = false;
+			}
 	}
 
 	public void UpdateAvailableItems()
 	{
 		AvailableCraftingItems = PC.Inv.getItemsOfType<CraftingMaterial> ();
-
-	}
-
-	public void DrawCraftingItems(){
-		if(AvailableCraftingItems != null && AvailableCraftingItems.Count>=0)
 		for (int i = 0; i < AvailableCraftingItems.Count; i++) {
 			if(AvailableCraftingItems[i]!=null)
 			{
 				GameObject tmp = Instantiate(defaultItem, new Vector3( -290 + (100 * i), 36, 0), Quaternion.identity)as GameObject;
 				//Change the default texture, DERP.
 				tmp.GetComponent<RawMaterialsBoxItem>().setUpItem(AvailableCraftingItems[i] as Item);
-
+				
 				tmp.transform.SetParent( thisCanvas.transform,false);
 			}
 		}
+	}
+
+	public void DestroyCraftingItems()
+	{
+		Component[] tmpHandle = thisCanvas.transform.GetComponentsInChildren<RawMaterialsBoxItem>();
+		for (int i = 0; i < tmpHandle.Length; i++) {
+			GameObject.Destroy(tmpHandle[i].gameObject);
+		}
+	}
+
+	public void DrawCraftingItems(){
+		//if(AvailableCraftingItems != null && AvailableCraftingItems.Count>=0)
+		
 	}
 
 	public void UpdatePanelView(){

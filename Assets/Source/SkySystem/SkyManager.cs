@@ -29,8 +29,8 @@ public class SkyManager : MonoBehaviour {
 		RenderSettings.skybox.SetFloat("_Blend", SkyTrans.Evaluate(((worldHours * 0.0416666666666667f )+(worldMinutes * 6.944444444444444e-4f))));
 		if(SkyLight!=null)
 		{
-			SkyLight.light.color=SunColor.Evaluate(((worldHours * 0.0416666666666667f )+(worldMinutes*(1/1440))));
-			SkyLight.light.intensity=SkyIllum.Evaluate(((worldHours * 0.0416666666666667f)+(worldMinutes*(1/1440))))*MaxSkyIllum;
+			SkyLight.GetComponent<Light>().color=SunColor.Evaluate(((worldHours * 0.0416666666666667f )+(worldMinutes*(1/1440))));
+			SkyLight.GetComponent<Light>().intensity=SkyIllum.Evaluate(((worldHours * 0.0416666666666667f)+(worldMinutes*(1/1440))))*MaxSkyIllum;
 			SkyLight.transform.rotation= Quaternion.Euler( new Vector3( -(worldHours * 15) -(worldMinutes * .25f) - 90 ,180,0));
 		}
 		StartCoroutine(RunSky());
@@ -49,8 +49,8 @@ public class SkyManager : MonoBehaviour {
 			{
 				if(SkyLight!=null)
 				{
-					SkyLight.light.color=SunColor.Evaluate(((worldHours * 0.0416666666666667f )+(worldMinutes*(1/1440))));
-					SkyLight.light.intensity=SkyIllum.Evaluate(((worldHours * 0.0416666666666667f)+(worldMinutes*(1/1440))))*MaxSkyIllum;
+					SkyLight.GetComponent<Light>().color=SunColor.Evaluate(((worldHours * 0.0416666666666667f )+(worldMinutes*(1/1440))));
+					SkyLight.GetComponent<Light>().intensity=SkyIllum.Evaluate(((worldHours * 0.0416666666666667f)+(worldMinutes*(1/1440))))*MaxSkyIllum;
 					SkyLight.transform.rotation= Quaternion.Euler( new Vector3( -(worldHours * 15) -(worldMinutes * .25f) - 90 ,180,0));
 				}
 				RenderSettings.fogColor=SkyColor.Evaluate(((worldHours * 0.0416666666666667f ) + (worldMinutes * 6.944444444444444e-4f)));

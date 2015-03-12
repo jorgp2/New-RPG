@@ -91,9 +91,9 @@ public class GunManager : MonoBehaviour {
 	IEnumerator WaitForAnimation(string name, float ratio, bool play)
 	{
     //Get the animation state for the named animation
-    AnimationState anim = animation[name];
+    AnimationState anim = GetComponent<Animation>()[name];
     //Play the animation
-    if(play) animation.Play(name);
+    if(play) GetComponent<Animation>().Play(name);
  
     //Loop until the normalized time reports a value
     //greater than our ratio.  This method of waiting for
@@ -102,6 +102,6 @@ public class GunManager : MonoBehaviour {
     while(anim.normalizedTime + float.Epsilon + Time.deltaTime < ratio)
         yield return new WaitForEndOfFrame();
 	if(play)
-	animation.Stop(name); 
+	GetComponent<Animation>().Stop(name); 
 	}
 }

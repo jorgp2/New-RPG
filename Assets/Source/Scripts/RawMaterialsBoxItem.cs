@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class RawMaterialsBoxItem : UnityEngine.UI.Selectable {
 	public Item thisItem;
-	public UnityEngine.UI.Image thisImage;
+	public Image thisImage;
 	public bool IsSelected=false;
 
 	// Use this for initialization
