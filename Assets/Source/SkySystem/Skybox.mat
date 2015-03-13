@@ -39,7 +39,7 @@ Material:
       data:
         first:
           name: _Blend
-        second: .149246931
+        second: .164417505
     m_Colors:
       data:
         first:
@@ -48,7 +48,7 @@ Material:
       data:
         first:
           name: _Tint
-        second: {r: .823529422, g: .898039222, b: .466666669, a: 1}
+        second: {r: .831372559, g: .890196085, b: .443137258, a: 1}
       data:
         first:
           name: _TintBottom
