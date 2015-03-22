@@ -49,7 +49,7 @@ public class PackScriptHelper
 
     void ProcessHeader(string header)
     {
-        string[] xxx = header.Split(new char {':' });
+        string[] xxx = header.Split(new char[] {':' });
 
         int i = 1;
 
